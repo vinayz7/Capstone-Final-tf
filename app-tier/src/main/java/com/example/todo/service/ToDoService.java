@@ -11,36 +11,17 @@ import java.util.stream.Collectors;
 
 @Service
 public class ToDoService {
+
     @Autowired
     private ToDoRepository repository;
 
-    public List<ToDoDto> getAllTasks() {
+    public List<ToDoDto> getAllTodos() {
         return repository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
-    public ToDoDto getTask(Long id) {
-        return repository.findById(id).map(this::convertToDto).orElse(null);
-    }
-
-    public ToDoDto createTask(ToDoDto dto) {
-        ToDo task = convertToEntity(dto);
-        return convertToDto(repository.save(task));
-    }
-
-    public ToDoDto updateTask(Long id, ToDoDto dto) {
-        ToDo task = repository.findById(id).orElse(null);
-        if (task != null) {
-            task.setTitle(dto.getTitle());
-            task.setDescription(dto.getDescription());
-            task.setDueDate(dto.getDueDate());
-            task.setCompleted(dto.isCompleted());
-            return convertToDto(repository.save(task));
-        }
-        return null;
-    }
-
-    public void deleteTask(Long id) {
-        repository.deleteById(id);
+    public ToDoDto create(ToDoDto dto) {
+        ToDo entity = convertToEntity(dto);
+        return convertToDto(repository.save(entity));
     }
 
     private ToDoDto convertToDto(ToDo entity) {
