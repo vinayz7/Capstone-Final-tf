@@ -1,1 +1,11 @@
 
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f8fb;
+}
+.container {
+    margin: 40px;
+}
+.btn {
+    margin-bottom: 10px;
+}
