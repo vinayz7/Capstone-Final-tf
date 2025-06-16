@@ -1,0 +1,25 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f2f2f2;
+}
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+.btn {
+    padding: 10px 20px;
+    background-color: #5cb85c;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
