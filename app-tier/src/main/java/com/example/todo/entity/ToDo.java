@@ -2,11 +2,9 @@ package com.example.todo.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "todos")
 @Data
 public class ToDo {
     @Id
