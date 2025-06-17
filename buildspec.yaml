@@ -11,11 +11,10 @@ env:
 phases:
   install:
     runtime-versions:
-      java: corretto17
-      docker: 20
+      java: corretto17  # ONLY include Java here; Docker doesn't belong here
     commands:
       - echo Installing Maven...
-      - yum install -y maven
+      - yum install -y maven docker
 
   pre_build:
     commands:
