@@ -19,4 +19,33 @@ spec:
           image: 216989142685.dkr.ecr.us-east-1.amazonaws.com/3-tier:todo
           ports:
             - containerPort: 80
-        
+          apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-app
+  labels:
+    app: todo-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: todo-app
+  template:
+    metadata:
+      labels:
+        app: todo-app
+    spec:
+      containers:
+        - name: todo-app
+          image: 216989142685.dkr.ecr.us-east-1.amazonaws.com/3-tier:todo
+          ports:
+            - containerPort: 80
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://database-1.czuuyk0ecdzx.us-east-1.rds.amazonaws.com:3306/todo
+            - name: SPRING_DATASOURCE_USERNAME
+              value: admin
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: root1234
+            - name: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
+              value: org.hibernate.dialect.MySQL8Dialect
