@@ -1,29 +1,41 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>ToDo Dashboard</title>
-     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>ToDo List</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
 <div class="container">
-    <h1>Task Dashboard</h1>
-    <a href="/add" class="btn">Add Task</a>
-    <table>
-        <thead>
-        <tr><th>Title</th><th>Due Date</th><th>Completed</th><th>Actions</th></tr>
-        </thead>
-        <tbody>
-        <tr th:each="task : ${tasks}">
-            <td th:text="${task.title}"></td>
-            <td th:text="${task.dueDate}"></td>
-            <td th:text="${task.completed} ? 'Yes' : 'No'"></td>
-            <td>
-                <a th:href="@{/edit/{id}(id=${task.id})}">Edit</a> |
-                <a th:href="@{/delete/{id}(id=${task.id})}">Delete</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <h1>My ToDo List</h1>
+
+    <a th:href="@{/add}">
+        <button>Add New Task</button>
+    </a>
+
+    <ul>
+        <li th:each="task : ${todos}"
+            th:class="'priority-' + ${task.priority.toString().toLowerCase()} + ' ' + (${task.completed} ? 'completed' : '')">
+            <div>
+                <h3 th:text="${task.title}">Task Title</h3>
+                <p th:text="${task.description}">Task Description</p>
+                <p>
+                    <strong>Priority:</strong> <span th:text="${task.priority}">MEDIUM</span> |
+                    <strong>Due:</strong> <span th:text="${task.dueDate}">2025-06-22</span> |
+                    <strong>Status:</strong>
+                    <span th:text="${task.completed} ? 'Completed' : 'Pending'">Completed</span>
+                </p>
+            </div>
+
+            <div class="task-actions">
+                <a th:href="@{'/edit/' + ${task.id}}">
+                    <button class="edit">Edit</button>
+                </a>
+                <a th:href="@{'/delete/' + ${task.id}}">
+                    <button class="delete">Delete</button>
+                </a>
+            </div>
+        </li>
+    </ul>
 </div>
 </body>
 </html>

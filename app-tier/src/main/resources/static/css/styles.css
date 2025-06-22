@@ -1,135 +1,140 @@
-/* Base Styles */
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f6f8;
+    font-family: 'Poppins', sans-serif;
+    background-color: #fdf6f0;
     margin: 0;
     padding: 0;
     color: #333;
 }
 
-/* Container */
+/* Page Container */
 .container {
-    max-width: 800px;
+    max-width: 750px;
     margin: 50px auto;
     padding: 30px;
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
-/* Headings */
+/* Header */
 h1, h2 {
     text-align: center;
     color: #2c3e50;
+    margin-bottom: 30px;
 }
 
-/* Buttons */
-a.btn, button {
-    display: inline-block;
-    background-color: #3498db;
+/* Input & Textarea */
+input[type="text"], textarea, select, input[type="date"] {
+    width: 100%;
+    padding: 12px 16px;
+    margin: 12px 0;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border 0.3s;
+}
+
+input[type="text"]:focus, textarea:focus, select:focus {
+    border-color: #ff7f50;
+    outline: none;
+}
+
+/* Submit & Button Styling */
+input[type="submit"], button {
+    background-color: #ff7f50;
     color: white;
-    padding: 10px 18px;
-    border: none;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 15px;
-    cursor: pointer;
+    padding: 12px 20px;
     margin-top: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-a.btn:hover,
-button:hover {
-    background-color: #2980b9;
+input[type="submit"]:hover, button:hover {
+    background-color: #e76d3b;
 }
 
-/* Table */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 25px;
+/* Task List Styles */
+ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 30px;
 }
 
-table, th, td {
-    border: 1px solid #ddd;
+ul li {
+    padding: 16px 20px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-th, td {
-    padding: 12px 16px;
-    text-align: left;
+/* Priority Styles */
+.priority-high {
+    background-color: #ffe6e6;
+    border-left: 6px solid #ff6b6b;
 }
 
-th {
-    background-color: #3498db;
+.priority-medium {
+    background-color: #fff5e6;
+    border-left: 6px solid #ffa502;
+}
+
+.priority-low {
+    background-color: #e6fff5;
+    border-left: 6px solid #2ed573;
+}
+
+/* Task Actions */
+.task-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.task-actions button {
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.task-actions .edit {
+    background-color: #20b2aa;
     color: white;
 }
 
-td a {
-    color: #2980b9;
-    text-decoration: none;
-    margin: 0 5px;
+.task-actions .delete {
+    background-color: #ff6b6b;
+    color: white;
 }
 
-td a:hover {
-    text-decoration: underline;
+/* Completed Task */
+.completed {
+    text-decoration: line-through;
+    opacity: 0.6;
 }
 
-/* Forms */
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-label {
-    margin-top: 12px;
-    margin-bottom: 5px;
-    font-weight: 600;
-}
-
-input[type="text"],
-input[type="date"],
-textarea {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 15px;
-    resize: vertical;
-}
-
-textarea {
-    min-height: 80px;
-}
-
-input[type="checkbox"] {
-    margin-top: 8px;
-    transform: scale(1.2);
-}
-
-/* Back link */
-a[href="/"] {
-    display: inline-block;
-    margin-top: 20px;
-    color: #3498db;
-    text-decoration: none;
-}
-
-a[href="/"]:hover {
-    text-decoration: underline;
-}
-
-/* Responsive */
+/* Responsive Design */
 @media (max-width: 600px) {
     .container {
         margin: 20px;
         padding: 20px;
     }
 
-    th, td {
-        font-size: 14px;
-        padding: 10px;
+    ul li {
+        flex-direction: column;
+        align-items: flex-start;
     }
 
-    input, textarea, button {
-        font-size: 14px;
+    .task-actions {
+        margin-top: 10px;
     }
 }

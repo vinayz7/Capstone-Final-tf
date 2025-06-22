@@ -11,41 +11,43 @@ import org.springframework.web.bind.annotation.*;
 public class HomeController {
 
     @Autowired
-    private ToDoService service;
+    private ToDoService todoService;
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("tasks", service.getAllTodos());
+        model.addAttribute("todos", todoService.getAllToDos());
         return "index";
     }
 
     @GetMapping("/add")
-    public String addForm(Model model) {
-        model.addAttribute("task", new ToDoDto());
+    public String showAddForm(Model model) {
+        model.addAttribute("todo", new ToDoDto());
         return "add-task";
     }
 
-    @PostMapping("/save")
-    public String save(@ModelAttribute("task") ToDoDto dto) {
-        service.create(dto);
+    @PostMapping("/add")
+    public String addTodo(@ModelAttribute("todo") ToDoDto todoDto) {
+        todoService.saveToDo(todoDto);
         return "redirect:/";
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable Long id, Model model) {
-        model.addAttribute("task", service.getTodoById(id));
+    public String editTodo(@PathVariable Long id, Model model) {
+        ToDoDto todo = todoService.getToDoById(id);
+        model.addAttribute("todo", todo);
         return "edit-task";
     }
 
-    @PostMapping("/update")
-    public String update(@ModelAttribute("task") ToDoDto dto) {
-        service.update(dto);
+    @PostMapping("/update/{id}")
+    public String updateTodo(@PathVariable Long id, @ModelAttribute("todo") ToDoDto todoDto) {
+        todoDto.setId(id);
+        todoService.updateToDo(todoDto);
         return "redirect:/";
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id) {
-        service.delete(id);
+    public String deleteTodo(@PathVariable Long id) {
+        todoService.deleteToDo(id);
         return "redirect:/";
     }
 }

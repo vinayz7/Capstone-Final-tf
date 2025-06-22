@@ -13,50 +13,58 @@ import java.util.stream.Collectors;
 public class ToDoServiceImpl implements ToDoService {
 
     @Autowired
-    private ToDoRepository repository;
+    private ToDoRepository repo;
 
-    private ToDoDto convert(ToDo todo) {
-        ToDoDto dto = new ToDoDto();
-        dto.setId(todo.getId());
-        dto.setTitle(todo.getTitle());
-        dto.setDescription(todo.getDescription());
-        dto.setDueDate(todo.getDueDate());
-        dto.setCompleted(todo.isCompleted());
-        return dto;
+    @Override
+    public void saveToDo(ToDoDto dto) {
+        ToDo todo = mapToEntity(dto);
+        repo.save(todo);
     }
 
-    private ToDo toEntity(ToDoDto dto) {
+    @Override
+    public void updateToDo(ToDoDto dto) {
+        ToDo todo = mapToEntity(dto);
+        repo.save(todo); // repo.save will do insert or update
+    }
+
+    @Override
+    public ToDoDto getToDoById(Long id) {
+        return repo.findById(id)
+                .map(this::mapToDto)
+                .orElse(null);
+    }
+
+    @Override
+    public List<ToDoDto> getAllToDos() {
+        return repo.findAll().stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteToDo(Long id) {
+        repo.deleteById(id);
+    }
+
+    private ToDo mapToEntity(ToDoDto dto) {
         ToDo todo = new ToDo();
         todo.setId(dto.getId());
         todo.setTitle(dto.getTitle());
         todo.setDescription(dto.getDescription());
+        todo.setPriority(dto.getPriority());
         todo.setDueDate(dto.getDueDate());
         todo.setCompleted(dto.isCompleted());
         return todo;
     }
 
-    @Override
-    public List<ToDoDto> getAllTodos() {
-        return repository.findAll().stream().map(this::convert).collect(Collectors.toList());
-    }
-
-    @Override
-    public ToDoDto create(ToDoDto dto) {
-        return convert(repository.save(toEntity(dto)));
-    }
-
-    @Override
-    public ToDoDto getTodoById(Long id) {
-        return repository.findById(id).map(this::convert).orElse(null);
-    }
-
-    @Override
-    public ToDoDto update(ToDoDto dto) {
-        return convert(repository.save(toEntity(dto)));
-    }
-
-    @Override
-    public void delete(Long id) {
-        repository.deleteById(id);
+    private ToDoDto mapToDto(ToDo todo) {
+        ToDoDto dto = new ToDoDto();
+        dto.setId(todo.getId());
+        dto.setTitle(todo.getTitle());
+        dto.setDescription(todo.getDescription());
+        dto.setPriority(todo.getPriority());
+        dto.setDueDate(todo.getDueDate());
+        dto.setCompleted(todo.isCompleted());
+        return dto;
     }
 }

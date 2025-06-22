@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Task</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Add New Task</h1>
+    <form action="#" th:action="@{/add}" th:object="${todo}" method="post">
+        <label for="title">Title</label>
+        <input type="text" th:field="*{title}" id="title" required />
+
+        <label for="description">Description</label>
+        <textarea th:field="*{description}" id="description"></textarea>
+
+        <label for="priority">Priority</label>
+        <select th:field="*{priority}" id="priority">
+            <option value="LOW">Low</option>
+            <option value="MEDIUM">Medium</option>
+            <option value="HIGH">High</option>
+        </select>
+
+        <label for="dueDate">Due Date</label>
+        <input type="date" th:field="*{dueDate}" id="dueDate" />
+
+        <label for="completed">
+            <input type="checkbox" th:field="*{completed}" id="completed" />
+            Completed
+        </label>
+
+        <input type="submit" value="Add Task" />
+    </form>
+</div>
+</body>
+</html>
