@@ -5,8 +5,8 @@ env:
     ACCOUNT_ID: 619071307284
     REGION: us-west-1
     REPO_NAME: final
-    IMAGE_TAG: v12
-    IMAGE_URI: 619071307284.dkr.ecr.us-west-1.amazonaws.com/final:v12
+    IMAGE_TAG: latest
+    IMAGE_URI: 619071307284.dkr.ecr.us-west-1.amazonaws.com/final:latest
 
 phases:
   install:
