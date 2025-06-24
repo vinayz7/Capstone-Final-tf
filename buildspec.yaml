@@ -5,8 +5,6 @@ env:
     ACCOUNT_ID: 619071307284
     REGION: us-west-1
     REPO_NAME: final
-    IMAGE_TAG: v13
-    IMAGE_URI: 619071307284.dkr.ecr.us-west-1.amazonaws.com/final:v13
 
 phases:
   install:
@@ -24,9 +22,14 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com
+      - export IMAGE_TAG=v1.$CODEBUILD_BUILD_NUMBER
+      - export IMAGE_URI=$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_NAME:$IMAGE_TAG
+      - echo "IMAGE_TAG=$IMAGE_TAG" >> build.env
+      - echo "IMAGE_URI=$IMAGE_URI" >> build.env
 
   build:
     commands:
+      - source build.env
       - echo Running SonarQube analysis...
       - cd app-tier
       - echo Building Docker image...
@@ -36,6 +39,7 @@ phases:
 
   post_build:
     commands:
+      - source build.env
       - echo Pushing image to Amazon ECR...
       - docker push $IMAGE_URI
       - echo Scanning image with Trivy...
