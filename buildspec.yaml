@@ -7,12 +7,13 @@ env:
     REPO_NAME: test
     IMAGE_TAG: v12
     IMAGE_URI: 235494798709.dkr.ecr.us-east-1.amazonaws.com/test:v12
+
 phases:
   install:
     runtime-versions:
-      java: corretto17  # ONLY include Java here; Docker doesn't belong here
+      java: corretto17
     commands:
-      - echo Installing Maven...
+      - echo Installing Maven and Docker...
       - yum install -y maven docker
 
   pre_build:
@@ -22,9 +23,9 @@ phases:
 
   build:
     commands:
-      - echo Building JAR inside app-tier...
+      - echo Building JAR inside app-tier and running SonarQube scan...
       - cd app-tier
-      - mvn clean package -DskipTests
+      - mvn clean verify sonar:sonar -Dsonar.projectKey=capstone-project-sonar -Dsonar.host.url=http://52.23.233.206 -Dsonar.login=sqp_53a12545f0fd992081b5d8c63bf7c232ae16e67e
       - echo Building Docker image...
       - docker build -t $REPO_NAME:$IMAGE_TAG .
       - docker tag $REPO_NAME:$IMAGE_TAG $IMAGE_URI
