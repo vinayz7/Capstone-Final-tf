@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: todo-app
-          image: IMAGE_PLACEHOLDER
+          image: 619071307284.dkr.ecr.us-west-1.amazonaws.com/final:v12
           imagePullPolicy: Always
           ports:
             - containerPort: 80
