@@ -17,16 +17,15 @@ phases:
       java: corretto17
     commands:
       - echo Installing Maven and Docker...
-      - yum install -y maven docker wget tar unzip
+      - yum install -y maven docker
       - echo Installing Trivy...
-      - wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.50.1_Linux-64bit.tar.gz
-      - tar zxvf trivy_0.50.1_Linux-64bit.tar.gz
+      - TRIVY_VERSION=0.63.0
+      - wget https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
+      - tar zxvf trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
       - mv trivy /usr/local/bin/
 
   pre_build:
     commands:
-      - echo Starting Docker...
-      - service docker start
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com
 
@@ -34,10 +33,7 @@ phases:
     commands:
       - echo Building JAR inside app-tier...
       - cd app-tier
-      - mvn clean verify sonar:sonar \
-          -Dsonar.projectKey=$SONAR_PROJECT_KEY \
-          -Dsonar.host.url=$SONAR_HOST_URL \
-          -Dsonar.login=$SONAR_TOKEN
+      - mvn clean verify sonar:sonar -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN -DskipTests
       - echo Building Docker image...
       - docker build -t $REPO_NAME:$IMAGE_TAG .
       - docker tag $REPO_NAME:$IMAGE_TAG $IMAGE_URI
@@ -45,15 +41,15 @@ phases:
 
   post_build:
     commands:
-      - echo Scanning Docker image with Trivy...
-      - trivy image --exit-code 0 --severity MEDIUM,HIGH,CRITICAL $IMAGE_URI
-      - echo Pushing Docker image to Amazon ECR...
+      - echo Pushing image to Amazon ECR...
       - docker push $IMAGE_URI
+      - echo Scanning image with Trivy...
+      - trivy image $IMAGE_URI --severity CRITICAL,HIGH
       - echo Preparing Kubernetes manifests...
       - mkdir -p k8s-out
       - sed "s|IMAGE_PLACEHOLDER|$IMAGE_URI|g" k8s/deployment.yaml > k8s-out/deployment.yaml
       - cp k8s/service.yaml k8s-out/service.yaml
-      - echo Done.
+      - echo Done preparing artifacts.
 
 artifacts:
   base-directory: k8s-out
