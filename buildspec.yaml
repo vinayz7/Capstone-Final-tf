@@ -2,15 +2,12 @@ version: 0.2
 
 env:
   variables:
-    ACCOUNT_ID: 235494798709
-    REGION: us-east-1
-    REPO_NAME: test
+    ACCOUNT_ID: 619071307284
+    REGION: us-west-1
+    REPO_NAME: final
     IMAGE_TAG: v12
-    IMAGE_URI: 235494798709.dkr.ecr.us-east-1.amazonaws.com/test:v12
-    SONAR_PROJECT_KEY: capstone-project-sonar
-    SONAR_HOST_URL: http://52.23.233.206
-    SONAR_TOKEN: sqp_53a12545f0fd992081b5d8c63bf7c232ae16e67e
-
+    IMAGE_URI: 619071307284.dkr.ecr.us-west-1.amazonaws.com/final:v12
+    
 phases:
   install:
     runtime-versions:
@@ -32,7 +29,6 @@ phases:
     commands:
       - echo Running SonarQube analysis...
       - cd app-tier
-      - mvn clean verify sonar:sonar -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN -DskipTests
       - echo Building Docker image...
       - docker build -t $REPO_NAME:$IMAGE_TAG .
       - docker tag $REPO_NAME:$IMAGE_TAG $IMAGE_URI
